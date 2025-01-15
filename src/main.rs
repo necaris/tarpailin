@@ -60,7 +60,7 @@ fn render_conversation(chat: &Prompt, verbose: bool) -> Markdown {
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let key = env::var("ANTHROPIC_API_KEY").expect("No Anthropic API key found.");
-    let opts = flags::Tarp::from_env()?;
+    let opts = flags::Tarp::from_env_or_exit();
 
     // If the `--i-am-a` flag isn't passed, then by default we choose a random
     // occupation to write a cover letter for.
