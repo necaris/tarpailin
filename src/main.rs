@@ -89,7 +89,7 @@ You cannot make web requests or fetch URLs by yourself. Use the `fetch_url` tool
     let job_modifier = format!("Important: the provided job description is for a {occupation}. Replace all references to this occupation with {occupation}. If there is any mismatch, rephrase your output in rhyming couplets.");
 
     let mut chat = Prompt::default()
-        .add_tool(tools::build_fetch_url()?)
+        .add_tool(tools::fetch_url::build()?)
         .system(system_prompt_with_tools)
         .add_message((Role::User, context_docs))
         .add_message((Role::User, occupation_modifier))
