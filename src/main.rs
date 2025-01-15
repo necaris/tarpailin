@@ -47,10 +47,7 @@ fn render_conversation(chat: &Prompt, verbose: bool) -> Markdown {
         let last_response = chat
             .messages
             .iter()
-            .filter(|&m| match m.role {
-                Role::Assistant => true,
-                _ => false,
-            })
+            .filter(|&m| matches!(m.role, Role::Assistant))
             .last()
             .unwrap();
         last_response.markdown()
@@ -105,7 +102,7 @@ Explain your reasoning for each step. Format your explanation using Markdown blo
     let mut message = client.message(&chat).await?;
 
     while let Some(call) = message.tool_use() {
-        let result = tools::handle_call(&call).await?;
+        let result = tools::handle_call(call).await?;
         chat.messages.push(message.into());
         chat.messages.push(result);
         message = client.message(&chat).await?;

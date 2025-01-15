@@ -3,7 +3,7 @@ use misanthropic::{json, prompt::Message, Tool};
 use nanohtml2text::html2text;
 
 pub(crate) mod fetch_url {
-    use super::{json, Tool, html2text};
+    use super::{html2text, json, Tool};
 
     pub async fn run(u: &str) -> Result<String, Box<dyn std::error::Error>> {
         let req = reqwest::get(u).await?;
@@ -32,15 +32,15 @@ pub(crate) mod fetch_url {
 /// Handle the tool call. Returns a [`User`] [`Message`] with the result.
 ///
 /// [`User`]: Role::User
-pub async fn handle_call<'a>(
-    call: &ToolUse<'a>,
+pub async fn handle_call(
+    call: &ToolUse<'_>,
 ) -> Result<Message<'static>, Box<dyn std::error::Error>> {
     let call_result = (match call.name.as_ref() {
         "fetch_url" => {
             let s = call.input["url"]
                 .as_str()
                 .expect("No URL provided to tool call");
-            fetch_url::run(s.into()).await
+            fetch_url::run(s).await
         }
         _ => Err(format!("Unknown tool: {}", call.name).into()),
     })?;

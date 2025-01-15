@@ -52,7 +52,7 @@ async fn load_resume(path: &str) -> Result<Document, Box<dyn std::error::Error>>
 async fn load_posting(url: &str) -> Result<Document, Box<dyn std::error::Error>> {
     Ok(Document {
         source: "job description",
-        content: tools::fetch_url::run(&url).await?,
+        content: tools::fetch_url::run(url).await?,
     })
 }
 
